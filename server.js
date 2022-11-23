@@ -142,13 +142,7 @@ app.post('/login', passport.authenticate('local', {
   failureRedirect: '/login?error=true'
 }));
 
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Listening on port 3000");
+});
 
-
-
-// check connection and port
-mongoose.connection.once('open', () => {
-  console.log('Connected to MongoDB');
-  app.listen(process.env.PORT || 3000, () => {
-    console.log("Listening on port 3000");
-  });
-})
