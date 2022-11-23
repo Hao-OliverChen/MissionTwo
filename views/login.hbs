@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Login page for ShueWorld voting infrastructure">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="authPage.css" />
+    <title>Document</title>
+</head>
+<body>
+    <form action="/login" method="post">
+	<div>
+		{{#if error}}
+		<p class="err-msg">Serial number or safe code is incorrect</p>
+		{{/if }}
+		<h1>Login</h1>
+	</div>
+	<div class="form-group">
+		<label>Serial Number: </label>
+		<input 
+			type="text" 
+			name="username" 
+			id="serialNum" 
+			placeholder="Enter your serial number" 
+			required />
+	</div>
+	<div class="form-group">
+		<label>Safe Code:</label>
+		<input 
+			type="password" 
+			name="password" 
+			id="safeCode"
+			placeholder="Enter your safe code" 
+			required />
+	</div>
+	<div>
+		<input type="submit" value="Login" />
+	</div>
+    <p style="text-align:center;">First time voting?</p>
+    <div style="text-align:center">
+    <a href="/register">Register</a>
+    </div>
+</form>
+</body>
+</html>

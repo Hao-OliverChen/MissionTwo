@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Voting phase for shueworld">
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #42788d;
+        }
+
+        .content {
+            max-width: 500px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <h3>
+            <b style="font-size:x-large ;">Welcome, {{{citizen}}} !</b>
+            <br><a href="/logout">Log Out</a>
+        </h3>
+        <form>
+            <h1>Choose your lace</h1>
+            <label class="container">NIKE
+                <input type="radio" name="candidate" value="NIKE">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">Adidas
+                <input type="radio" name="candidate" value="Adidas">
+                <span class="checkmark"></span>
+            </label>
+            <button onclick="handleSubmit()">submit</button>
+        </form>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+
+</html>
