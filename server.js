@@ -3,10 +3,6 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 const cookie = require('cookie-session');
 const hbs = require('express-handlebars').engine;
-const mongoose = require('mongoose');
-const passport = require('passport');
-const localStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const app = express();
 var amIloggedIn = false;
@@ -27,7 +23,7 @@ app.use(express.json());
 app.use(cors());
 
 
-function isAuthenticated(username, password, next){
+function isAuthenticated(username, password){
   if(username != "John" || password != "123"){
     amIloggedIn = false
   } 
@@ -84,10 +80,12 @@ app.get('/logout', (req, res) =>
 ------------------------------------------------------------------------------------------------------------
 POST 
  */
-app.post('/login',async (req, res) => {
-  if (isAuthenticated(req.serialNum,req.safeCode)) {
-    console.log("Username:" + req.serialNum);
-    console.log("Password" + req.safeCode);
+app.post('/login', (req, res) => {
+  console.log("Username:" + req.body.username);
+  console.log("Password:" + req.body.password);
+  console.log("IP Address --- " + req.socket.remoteAddress);
+  if (isAuthenticated(req.body.username, req.body.password)) {
+    currentLogin = req.body.username;
     res.redirect('/')
   }
   else res.redirect('/login?error=true')
