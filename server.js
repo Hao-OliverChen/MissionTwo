@@ -52,7 +52,7 @@ app.get('/', isLoggedIn, (req, res) => {
   console.log("------------------------------------------------");
   console.log("Current Login: " + currentLogin);
   const response = {
-    title: "Voting Phase",
+    title: "User Dashboard",
     error: req.query.error,
     citizen: currentLogin,
   }
