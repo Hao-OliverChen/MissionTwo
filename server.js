@@ -132,33 +132,6 @@ app.get('/logout', function (req, res) {
   currentLogin = ""
 });
 
-app.get('/register', isLoggedOut, (req, res) => {
-  const response = {
-    title: "Register",
-    error: req.query.error
-  }
-
-  res.render('register', response);
-});
-
-app.get('/citizen-registration', (req, res) => {
-  const response = {
-    title: "Citizen Registraion",
-    error: req.query.error
-  }
-
-  res.render('citizenRegistration', response);
-});
-
-app.get('/citizen-deletion', (req, res) => {
-  const response = {
-    title: "Citizen Deletion",
-    error: req.query.error
-  }
-
-  res.render('citizenDeletion', response);
-});
-
 
 /*
 ------------------------------------------------------------------------------------------------------------
@@ -169,89 +142,7 @@ app.post('/login', passport.authenticate('local', {
   failureRedirect: '/login?error=true'
 }));
 
-// handle register
-app.post('/register', async (req, res) => {
-  // check for validation
-  const exists = await User.exists({ serialNum: req.body.serialNum });
-  if (!exists) {
-    res.redirect('/register?error=true');
-    return;
-  };
 
-  // encrypt the safeCode
-  const hashedPwd = await bcrypt.hash(req.body.safeCode, 10);
-
-  // get the data
-  const doc = await User.findOne({ serialNum: req.body.serialNum });
-  // update the username
-  doc.safeCode = hashedPwd;
-  await doc.save();
-
-  // after registration redirect back to login
-  res.redirect('/login')
-
-});
-
-// handle citizen registration
-app.post('/citizen-registration', async (req, res) => {
-  // check for duplicate
-  const exists = await User.exists({ serialNum: req.body.serialNum });
-  if (exists) {
-    res.redirect('/citizen-registration?error=true');
-    return;
-  };
-
-  // create and store the new user
-  const result = await User.create({
-    serialNum: req.body.serialNum,
-    safeCode: "_EMPTY_",
-    candidate:"Unknown"
-  });
-
-  result.save();
-
-  // after registration redirect back to login
-  res.redirect('/citizen-registration')
-
-});
-
-// handle citizen deletion
-app.post('/citizen-deletion', async (req, res) => {
-  // check for validation
-  const exists = await User.exists({ serialNum: req.body.serialNum });
-  if (!exists) {
-    res.redirect('/citizen-deletion?error=true');
-    return;
-  };
-
-  // delete citizen
-  User.deleteOne({ serialNum: req.body.serialNum })
-  .then(function () {
-    console.log("Citizen " + req.body.serialNum + " is deleted"); // success
-  }).catch(function (error) {
-    console.log(error); // Failure
-  });
-
-  // after registration redirect back to login
-  res.redirect('/citizen-deletion')
-
-});
-
-// handle voting
-app.post('/vote-submission', async (req, res) => {
-
-  // get the data
-  const doc = await User.findOne({ serialNum: currentLogin });
-  // update the username
-  doc.candidate = req.body.candidate;
-  await doc.save();
-
-  console.log("Successfully submitted candidate:" + req.body.candidate)
-
-  // after registration redirect back to login
-  res.redirect('/')
-
-});
 
 
 // check connection and port
