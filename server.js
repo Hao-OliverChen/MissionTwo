@@ -11,20 +11,6 @@ const app = express();
 var currentLogin = "";
 dotenv.config();
 
-// use mongoose to connect to database
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.DATABASE_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-connectDB();
-
 // create user schema
 const UserSchema = new mongoose.Schema({
   serialNum: {
