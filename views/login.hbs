@@ -12,35 +12,31 @@
     <form action="/login" method="post">
 	<div>
 		{{#if error}}
-		<p class="err-msg">Serial number or safe code is incorrect</p>
+		<p class="err-msg">username or password is incorrect</p>
 		{{/if }}
 		<h1>Login</h1>
 	</div>
 	<div class="form-group">
-		<label>Serial Number: </label>
+		<label>Username: </label>
 		<input 
 			type="text" 
 			name="username" 
 			id="serialNum" 
-			placeholder="Enter your serial number" 
+			placeholder="Enter your username" 
 			required />
 	</div>
 	<div class="form-group">
-		<label>Safe Code:</label>
+		<label>Password:</label>
 		<input 
-			type="password" 
+			type="text" 
 			name="password" 
 			id="safeCode"
-			placeholder="Enter your safe code" 
+			placeholder="Enter your password" 
 			required />
 	</div>
 	<div>
 		<input type="submit" value="Login" />
 	</div>
-    <p style="text-align:center;">First time voting?</p>
-    <div style="text-align:center">
-    <a href="/register">Register</a>
-    </div>
 </form>
 </body>
 </html>

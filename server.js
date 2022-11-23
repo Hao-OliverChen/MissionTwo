@@ -7,27 +7,11 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
+const cors = require('cors');
 const app = express();
+var amIloggedIn = false;
 var currentLogin = "";
 dotenv.config();
-
-// create user schema
-const UserSchema = new mongoose.Schema({
-  serialNum: {
-    type: String,
-    required: true
-  },
-  safeCode: {
-    type: String,
-    required: true
-  },
-  candidate: {
-    type: String,
-    required: true
-  }
-});
-
-const User = mongoose.model('ShueWorld_Citizen', UserSchema);
 
 // Middleware
 app.engine('hbs', hbs({ extname: '.hbs' }));
@@ -40,47 +24,26 @@ app.use(session({
 }));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors());
 
-// Passport.js
-app.use(passport.initialize());
-app.use(passport.session());
 
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
-});
-
-// verify the login
-passport.use(new localStrategy(function (serialNum, safeCode, done) {
-  User.findOne({ serialNum: serialNum }, function (err, user) {
-    if (err) return done(err);
-    if (!user) return done(null, false, { message: 'Incorrect serialNum.' });
-
-    bcrypt.compare(safeCode, user.safeCode, function (err, res) {
-      if (err) return done(err);
-      if (res === false) return done(null, false, { message: 'Incorrect safeCode.' });
-
-      // store the valid user game info
-      currentLogin = serialNum;
-      return done(null, user);
-    });
-  });
-}));
+function isAuthenticated(username, password, next){
+  if(username != "John" || password != "123"){
+    amIloggedIn = false
+  } 
+  else amIloggedIn = true;
+  return amIloggedIn;
+}
 
 // login check
 function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) return next();
+  if (amIloggedIn) return next();
   res.redirect('/login');
 }
 
 // log out check
 function isLoggedOut(req, res, next) {
-  if (!req.isAuthenticated()) return next();
+  if (!amIloggedIn) return next();
   res.redirect('/');
 }
 
@@ -110,23 +73,25 @@ app.get('/login', isLoggedOut, (req, res) => {
 });
 
 // swap to post if have time
-app.get('/logout', function (req, res) {
-  req.logout(function (err) {
-    if (err) { return next(err); }
-    res.redirect('/');
-  });
+app.get('/logout', (req, res) =>
+{
   currentLogin = ""
+  amIloggedIn = false;
+  res.redirect('/login');
 });
-
 
 /*
 ------------------------------------------------------------------------------------------------------------
 POST 
  */
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login?error=true'
-}));
+app.post('/login',async (req, res) => {
+  if (isAuthenticated(req.serialNum,req.safeCode)) {
+    console.log("Username:" + req.serialNum);
+    console.log("Password" + req.safeCode);
+    res.redirect('/')
+  }
+  else res.redirect('/login?error=true')
+});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Listening on port 3000");
