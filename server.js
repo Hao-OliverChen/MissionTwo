@@ -41,6 +41,11 @@ function isAnswerCorrect(answer){
   return isAnswered;
 }
 
+function isCheckedPass(req, res, next){
+  if (amIloggedIn) return next();
+  res.redirect('/login');
+}
+
 
 // login check
 function isLoggedIn(req, res, next) {
@@ -79,10 +84,11 @@ app.get('/login', isLoggedOut, (req, res) => {
   res.render('login', response);
 });
 
-app.get('/secretQA', (req, res) => {
+app.get('/secretQA', isCheckedPass, (req, res) => {
   const response = {
     title: "Login",
-    error: req.query.error
+    error: req.query.error,
+    randomQuestion: "What's your mother's name?"
   }
 
   res.render('SecretAnswer', response);
@@ -93,6 +99,7 @@ app.get('/logout', (req, res) =>
 {
   currentLogin = ""
   amIloggedIn = false;
+  isAnswered = false;
   res.redirect('/login');
 });
 
