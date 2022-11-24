@@ -7,6 +7,7 @@ const cors = require('cors');
 const app = express();
 var amIloggedIn = false;
 var currentLogin = "";
+var isAnswered = false; // boolean checker for secret answer
 dotenv.config();
 
 // Middleware
@@ -22,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
-
+// for authenticating the username & password combo
 function isAuthenticated(username, password){
   if(username != "John" || password != "123"){
     amIloggedIn = false
@@ -31,15 +32,25 @@ function isAuthenticated(username, password){
   return amIloggedIn;
 }
 
+// for checking if the answer is correct
+function isAnswerCorrect(answer){
+  if(answer != "Zane"){
+    isAnswered = false
+  } 
+  else isAnswered = true;
+  return isAnswered;
+}
+
+
 // login check
 function isLoggedIn(req, res, next) {
-  if (amIloggedIn) return next();
+  if (amIloggedIn && isAnswered) return next();
   res.redirect('/login');
 }
 
 // log out check
 function isLoggedOut(req, res, next) {
-  if (!amIloggedIn) return next();
+  if (!amIloggedIn || !isAnswered) return next();
   res.redirect('/');
 }
 
@@ -68,6 +79,15 @@ app.get('/login', isLoggedOut, (req, res) => {
   res.render('login', response);
 });
 
+app.get('/secretQA', (req, res) => {
+  const response = {
+    title: "Login",
+    error: req.query.error
+  }
+
+  res.render('SecretAnswer', response);
+});
+
 // swap to post if have time
 app.get('/logout', (req, res) =>
 {
@@ -86,9 +106,17 @@ app.post('/login', (req, res) => {
   console.log("IP Address --- " + req.socket.remoteAddress);
   if (isAuthenticated(req.body.username, req.body.password)) {
     currentLogin = req.body.username;
-    res.redirect('/')
+    res.redirect('/secretQA')
   }
   else res.redirect('/login?error=true')
+});
+
+app.post('/secretQA', (req, res) => {
+  console.log("Answer:" + req.body.answer);
+  if (isAnswerCorrect(req.body.answer)) {
+    res.redirect('/')
+  }
+  else res.redirect('/secretQA?error=true')
 });
 
 app.listen(process.env.PORT || 3000, () => {
