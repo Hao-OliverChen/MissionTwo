@@ -1,42 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="Login page for ShueWorld voting infrastructure">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="authPage.css" />
-    <title>Document</title>
+	<title>Document</title>
 </head>
+
 <body>
-    <form action="/login" method="post">
-	<div>
-		{{#if error}}
-		<p class="err-msg">username or password is incorrect</p>
-		{{/if }}
-		<h1>Login</h1>
-	</div>
-	<div class="form-group">
-		<label>Username: </label>
-		<input 
-			type="text" 
-			name="username" 
-			id="serialNum" 
-			placeholder="Enter your username" 
-			required />
-	</div>
-	<div class="form-group">
-		<label>Password:</label>
-		<input 
-			type="text" 
-			name="password" 
-			id="safeCode"
-			placeholder="Enter your password" 
-			required />
-	</div>
-	<div>
-		<input type="submit" value="Login" />
-	</div>
-</form>
+	<form action="/login" method="post">
+		<div>
+			<div id="clockdiv">
+				Minutes: <span class="minutes"></span><br>
+				Seconds: <span class="seconds"></span>
+			</div>
+			<br>
+			{{#if error}}
+			<p class="err-msg">username or password is incorrect</p>
+			{{/if }}
+			<h1>Login</h1>
+		</div>
+		<div class="form-group">
+			<label>Username: </label>
+			<input type="text" name="username" id="serialNum" placeholder="Enter your username" required />
+		</div>
+		<div class="form-group">
+			<label>Password:</label>
+			<input type="text" name="password" id="safeCode" placeholder="Enter your password" required />
+		</div>
+		<div>
+			<input type="submit" value="Login" />
+		</div>
+	</form>
+	<script src="timer.js"></script>
 </body>
+
 </html>
