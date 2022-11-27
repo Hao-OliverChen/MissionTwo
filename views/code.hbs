@@ -32,7 +32,7 @@
 </head>
 
 <body>
-	<form action="/getCode" method="post">
+	<form action="/getQuestion" method="post">
 		<div>
 			<div id="clockdiv">
 				Minutes: <span class="minutes"></span><br>
@@ -42,11 +42,11 @@
 			<h1 style="color:darkred ;">SMS</h1>
 		</div>
 		<div class="form-group">
-			<label style="color:darkred ;">Code:</label>
+			<label style="color:darkred ;">Question:</label>
 			<input type="text" name="answer" id="answer" value="{{{secretCode}}}" disabled />
 		</div>
 		<div>
-			<input type="submit" value="Request Code" />
+			<input type="submit" value="Get Question" />
 		</div>
         <div style="text-align:center">
 			<a href="/secretQA">Back to Anthentification</a>

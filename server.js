@@ -34,7 +34,7 @@ function isAuthenticated(username, password){
 
 // for checking if the answer is correct
 function isAnswerCorrect(answer){
-  if(answer != "0178"){
+  if(answer != "Zane"){
     isAnswered = false
   } 
   else isAnswered = true;
@@ -88,13 +88,13 @@ app.get('/secretQA', isCheckedPass, (req, res) => {
   const response = {
     title: "Login",
     error: req.query.error,
-    randomQuestion: "What's your mother's name?"
+    randomQuestion: ""
   }
 
   res.render('SecretAnswer', response);
 });
 
-app.get('/getCode', (req, res) => {
+app.get('/getQuestion', (req, res) => {
   const response = {
     title: "SMS",
     secretCode: ""
@@ -135,10 +135,10 @@ app.post('/secretQA', (req, res) => {
   else res.redirect('/secretQA?error=true')
 });
 
-app.post('/getCode', (req, res) => {
+app.post('/getQuestion', (req, res) => {
   const response = {
     title: "SMS",
-    secretCode: "0178"
+    secretCode: "What's your Brother's name?"
   }
 
   res.render('code', response);
