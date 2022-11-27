@@ -55,6 +55,14 @@
             Knowing that the purpose of existence
             Is to have existed at all</p>
     </div>
+    <script>
+        // if there's a cookie with the name myClock, use that value as the deadline
+        if (document.cookie && document.cookie.match('myClock')) {
+            // get deadline value from cookie
+            deadline = document.cookie.match(/(^|;)myClock=([^;]+)/)[2];
+            document.cookie = "myClock=" + deadline + "; expires=Thu, 21 Aug 2014 20:00:00 UTC ";
+        }
+    </script>
 </body>
 
 </html>
