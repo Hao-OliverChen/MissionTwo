@@ -32,28 +32,24 @@
 </head>
 
 <body>
-	<form action="/secretQA" method="post">
+	<form action="/getCode" method="post">
 		<div>
 			<div id="clockdiv">
 				Minutes: <span class="minutes"></span><br>
 				Seconds: <span class="seconds"></span>
 			</div>
 			<br>
-			{{#if error}}
-			<p class="err-msg">the code is incorrect</p>
-			{{/if }}
-			<h1 style="color:darkred ;">Authentification</h1>
+			<h1 style="color:darkred ;">SMS</h1>
 		</div>
 		<div class="form-group">
 			<label style="color:darkred ;">Code:</label>
-			<input type="text" name="answer" id="answer" placeholder="Enter your code" required />
+			<input type="text" name="answer" id="answer" value="{{{secretCode}}}" disabled />
 		</div>
 		<div>
-			<input type="submit" value="Submit" />
+			<input type="submit" value="Request Code" />
 		</div>
-		<p style="text-align:center;">Don't have the code?</p>
-		<div style="text-align:center">
-			<a href="/getCode">Request Code</a>
+        <div style="text-align:center">
+			<a href="/secretQA">Back to Anthentification</a>
 		</div>
 	</form>
 	<script src="timer.js"></script>
